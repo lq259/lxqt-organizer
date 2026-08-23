@@ -43,9 +43,7 @@ QHash<QString, Collection> collectionsById(const QList<Collection> &collections)
     for (const Collection &collection : collections)
     {
         if (collection.isValid() && !collection.id.isEmpty())
-        {
             byId.insert(collection.id, collection);
-        }
     }
     return byId;
 }
@@ -61,18 +59,14 @@ void addChangedCollectionIds(QSet<QString> *changedIds,
     {
         const auto current = newById.constFind(it.key());
         if (current == newById.cend() || current.value() != it.value())
-        {
             changedIds->insert(it.key());
-        }
     }
 
     for (auto it = newById.cbegin(); it != newById.cend(); ++it)
     {
         const auto previous = oldById.constFind(it.key());
         if (previous == oldById.cend() || previous.value() != it.value())
-        {
             changedIds->insert(it.key());
-        }
     }
 }
 
@@ -146,9 +140,7 @@ bool ApplicationContext::Impl::reloadCollections()
 {
     CollectionCatalog catalog;
     if (!CollectionCatalog::load(&catalog))
-    {
         return false;
-    }
 
     auto newCatalog = std::make_shared<const CollectionCatalog>(std::move(catalog));
     if (QThread::currentThread() == collectionService.thread())
