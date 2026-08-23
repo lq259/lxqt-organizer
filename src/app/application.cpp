@@ -122,9 +122,7 @@ bool LXQtOrganizerApplication::hasVisibleWindows() const
     for (const QPointer<MainWindow> &window : windows_)
     {
         if (!window.isNull() && window->isVisible())
-        {
             return true;
-        }
     }
     return false;
 }
@@ -133,9 +131,7 @@ MainWindow *LXQtOrganizerApplication::activeWindowTarget()
 {
     windows_.removeAll(nullptr);
     if (windows_.isEmpty())
-    {
         newWindow();
-    }
 
     windows_.removeAll(nullptr);
     return windows_.isEmpty() ? nullptr : windows_.constLast();
@@ -144,9 +140,7 @@ MainWindow *LXQtOrganizerApplication::activeWindowTarget()
 void LXQtOrganizerApplication::showWindow(MainWindow *window)
 {
     if (!window)
-    {
         return;
-    }
 
     window->show();
     window->raise();
