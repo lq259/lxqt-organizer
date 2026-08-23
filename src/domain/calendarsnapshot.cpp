@@ -50,16 +50,12 @@ MutableCalendarPtr cloneCalendar(const MutableCalendarPtr &calendar)
     for (const MutableEventPtr &event : calendar->events())
     {
         if (!copy->addEvent(cloneEvent(event)))
-        {
             return {};
-        }
     }
     for (const MutableTodoPtr &todo : calendar->rawTodos())
     {
         if (!copy->addTodo(cloneTodo(todo)))
-        {
             return {};
-        }
     }
     return copy;
 }
@@ -70,16 +66,12 @@ MutableCalendarPtr cloneCalendar(const CalendarPtr &calendar)
     for (const MutableEventPtr &event : calendar->events())
     {
         if (!copy->addEvent(cloneEvent(event)))
-        {
             return {};
-        }
     }
     for (const MutableTodoPtr &todo : calendar->rawTodos())
     {
         if (!copy->addTodo(cloneTodo(todo)))
-        {
             return {};
-        }
     }
     return copy;
 }
