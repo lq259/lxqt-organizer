@@ -34,46 +34,36 @@ bool hasCalendarItemPayload(const CalendarItem &item)
 PayloadShape payloadShape(const CalendarItem &item)
 {
     if (std::holds_alternative<CalendarPtr>(item.payload))
-    {
         return PayloadShape::Calendar;
-    }
+    
     if (std::holds_alternative<EventPtr>(item.payload))
-    {
         return PayloadShape::Event;
-    }
+    
     if (std::holds_alternative<TodoPtr>(item.payload))
-    {
         return PayloadShape::Todo;
-    }
+    
     return PayloadShape::Auto;
 }
 
 MutableCalendarPtr calendarForItem(const CalendarItem &item)
 {
     if (!hasCalendarItemPayload(item))
-    {
         return {};
-    }
+    
     const PayloadShape shape = payloadShape(item);
     if (shape == PayloadShape::Calendar)
-    {
         return cloneCalendar(std::get<CalendarPtr>(item.payload));
-    }
 
     MutableCalendarPtr calendar(new KCalendarCore::MemoryCalendar(QTimeZone::systemTimeZone()));
     if (shape == PayloadShape::Event)
     {
         if (!calendar->addEvent(cloneEvent(std::get<EventPtr>(item.payload))))
-        {
             return {};
-        }
     }
     if (shape == PayloadShape::Todo)
     {
         if (!calendar->addTodo(cloneTodo(std::get<TodoPtr>(item.payload))))
-        {
             return {};
-        }
     }
     return calendar->events().isEmpty() && calendar->rawTodos().isEmpty() ? MutableCalendarPtr() : calendar;
 }
@@ -98,9 +88,8 @@ calendarItem(const ItemRef &storage, const QString &uid, const MutableCalendarPt
     const KCalendarCore::Event::List events = calendar->events();
     const KCalendarCore::Todo::List todos = calendar->rawTodos();
     if (events.isEmpty() && todos.isEmpty())
-    {
         return item;
-    }
+    
     if (shape == PayloadShape::Calendar)
     {
         item.payload = calendarSnapshot(calendar);
@@ -109,17 +98,15 @@ calendarItem(const ItemRef &storage, const QString &uid, const MutableCalendarPt
     if (shape == PayloadShape::Event)
     {
         if (events.size() == 1 && todos.isEmpty())
-        {
             item.payload = eventSnapshot(cloneEvent(events.constFirst()));
-        }
+        
         return item;
     }
     if (shape == PayloadShape::Todo)
     {
         if (todos.size() == 1 && events.isEmpty())
-        {
             item.payload = todoSnapshot(cloneTodo(todos.constFirst()));
-        }
+        
         return item;
     }
     if (events.size() == 1 && todos.isEmpty())
@@ -184,18 +171,16 @@ bool hasTask(const Task &task)
 QDate taskDueDate(const Task &task)
 {
     if (!task.todo->hasDueDate() || !task.todo->dtDue().isValid())
-    {
         return QDate();
-    }
+    
     return task.todo->dtDue().date();
 }
 
 QTime taskDueTime(const Task &task)
 {
     if (!task.todo->hasDueDate())
-    {
         return QTime();
-    }
+    
     return task.todo->dtDue(true).time();
 }
 
@@ -228,9 +213,8 @@ QList<Task> cloneTasks(const QList<Task> &tasks)
     QList<Task> copies;
     copies.reserve(tasks.size());
     for (const Task &task : tasks)
-    {
         copies.append(cloneTask(task));
-    }
+    
     return copies;
 }
 
